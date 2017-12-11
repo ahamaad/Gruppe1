@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Todo - med objekter!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h3>Todo-CRUD (med objekter)</h3>
+            CRUD = Create, Read, Update, Delete
+        </div>
+        <div>
+            <table class="table" id="mainTable">
+                <tr>
+                    <th>Beskrivelse</th>
+                    <th>Dato gjort</th>
+                    <th>Dato planlagt</th>
+                    <th><button type="button">Fullførte oppgaver</button></th>
+                    <th><button type="button">Uferdige oppgaver</button></th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+
+            <div class="form-horizontal">
+                <div class="control-group form-inline">
+                    <label for="txtDescription" class="control-label col-xs-3">Beskrivelse</label>
+                    <input class="form-control" type="text" id="txtDescription" /><br />
+                    <label for="txtDescription" class="control-label col-xs-3">Dato planlagt</label>
+                    <input class="form-control" type="text" id="txtDatePlanned" /><br />
+                    <label for="txtDescription" class="control-label col-xs-3">Oppgaven er gjort</label>
+                    <input class="form-control" input type="checkbox" id="txtTaskDone" /><br />
+                    <button class="btn-primary" onclick="addItem()">Legg til</button>
+                    <input type="color" value="#ff0000">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        "use strict";
+
+        var allItems = [
+            {
+                description: 'Lage leksjon om egne objekterx',
+                datePlanned: '24.08.2017',
+                isdone: false,
+                dateDone: '',
+            }
+        ];
+        var txtDescription = document.getElementById('txtDescription');
+        var txtDatePlanned = document.getElementById('txtDatePlanned');
+        var txtTaskDone = document.getElementById('txtTaskDone');
+        var table = document.getElementById("mainTable");
+        var currentDate = new Date();
+        var day = currentDate.getDate();
+        var month = currentDate.getMonth() + 1;
+        var year = currentDate.getFullYear();
+        showItems();
+        function showItems() {
+            var tableHeaderRow = table.rows[0].outerHTML;
+            table.innerHTML = tableHeaderRow;
+            for (var i = 0; i < allItems.length; i++) {
+                var row = table.insertRow();
+                var cellDescription = row.insertCell();
+                var cellDateDone = row.insertCell();
+                var cellDatePlanned = row.insertCell();
+                var cellDelete = row.insertCell();
+                cellDescription.innerHTML = allItems[i].description;
+                cellDatePlanned.innerHTML = allItems[i].datePlanned;
+                cellDelete.innerHTML =
+                    '<td><a href="javascript:deleteItem('
+                    + i + ')">delete</a></td>';
+                var checked = allItems[i].isdone ? 'checked' : '';
+                cellDateDone.innerHTML =
+                    '<input type="checkbox" ' + checked + ' onchange="done(' + i + ')" >' + allItems[i].dateDone;
+            }
+        }
+        function addItem() {
+            var newItem = {};
+            newItem.description = txtDescription.value;
+            newItem.datePlanned = txtDatePlanned.value;
+            newItem.isdone = txtTaskDone.checked;
+            newItem.dateDone = '';
+            allItems.push(newItem);
+            showItems();
+        }
+        function done(i) {
+            if (allItems[i].isdone) {
+                allItems[i].isdone = false;
+                allItems[i].dateDone = false;
+            }
+            else {
+                allItems[i].isdone = true;
+                allItems[i].dateDone = JSON.stringify(currentDate).substr(1, 10);
+            }
+            showItems();
+        }
+        function deleteItem(index) {
+            allItems.splice(index, 1);
+            showItems();
+        }
+        //function setdate() {
+        //    + day + '.' + month + '.' + year;
+        //    showItems();
+        //}
+
+    </script>
+</body>
+</html>
+
+
+<!--DATO
+
+i function done:
+if (allItems[i].isdone) {
+    allItems[i].dateDone = getDate().toString().substr(0,10);
+}
+
+
+    cellDateDone.innerHTML =
+                    '<input type="checkbox" ' + checked + ' onchange="done(' + i + ')" >' + allItems[i].dateDone;
+
+
+
+                allItems.push(index, 1);
+            + day + '.' + month + '.' + year;
+            showItems();
+
+            allItems[index].checkBox = '<input type="checkbox" checked onchange="unDone(';
+                                               allItems[index].dateDone=day + '.' + month + '.' + year;
+                                               showItems();
+                                               }-->
